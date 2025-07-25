@@ -48,4 +48,27 @@ public class DeptServiceImpl implements DeptService {
             return ResultUtil.fail("添加失败");
         }
     }
+
+    @Override
+    public Result<Dept> getDeptById(Integer id) {
+        Dept dept = deptMapper.getDeptById(id);
+        if(dept != null) {
+            return ResultUtil.success(dept);
+        } else {
+            return ResultUtil.fail("部门不存在");
+        }
+    }
+
+    @Override
+    public Result updateDept(Dept dept) {
+        if(dept.getName() == null || dept.getId() == null) {
+            return ResultUtil.fail("部门名不能为空");
+        }
+        int rows = deptMapper.updateDept(dept);
+        if(rows > 0) {
+            return ResultUtil.success("修改成功");
+        } else {
+            return ResultUtil.fail("修改失败");
+        }
+    }
 }

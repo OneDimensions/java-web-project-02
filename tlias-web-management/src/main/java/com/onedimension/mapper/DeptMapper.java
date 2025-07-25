@@ -38,4 +38,10 @@ public interface DeptMapper {
 
     @Insert("insert into dept(name, create_time, update_time) values (#{name}, now(), now())")
     Integer addDept(Dept dept);
+
+    @Select("select id, name, create_time, update_time from dept where id = #{id}")
+    Dept getDeptById(Integer id);
+
+    @Update("update dept set name = #{name}, update_time = now() where id = #{id}")
+    Integer updateDept(Dept dept);
 }

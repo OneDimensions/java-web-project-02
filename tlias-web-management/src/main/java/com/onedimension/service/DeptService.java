@@ -20,4 +20,8 @@ public interface DeptService {
     Result deleteDept(Integer id);
 
     Result addDept(Dept dept);
+
+    Result<Dept> getDeptById(Integer id);
+
+    Result updateDept(Dept dept);
 }
