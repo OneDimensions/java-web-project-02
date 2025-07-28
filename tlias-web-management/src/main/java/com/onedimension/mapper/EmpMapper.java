@@ -26,4 +26,5 @@ public interface EmpMapper {
 
     List<Emp> page(EmpQueryParams empQueryParams);
 
+    void add(Emp emp);
 }

@@ -6,7 +6,9 @@ import com.onedimension.mapper.EmpMapper;
 import com.onedimension.pojo.Emp;
 import com.onedimension.pojo.EmpQueryParams;
 import com.onedimension.pojo.PageResult;
+import com.onedimension.pojo.Result;
 import com.onedimension.service.EmpService;
+import com.onedimension.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,5 +52,11 @@ public class EmpServiceImpl implements EmpService {
         // 3. 封装结果
         Page<Emp> p = (Page<Emp>) empList;
         return new PageResult<>(p.getTotal(), p.getResult());
+    }
+
+    @Override
+    public Result add(Emp emp) {
+        empMapper.add(emp);
+        return ResultUtil.success();
     }
 }

@@ -9,4 +9,6 @@ import java.time.LocalDate;
 
 public interface EmpService {
     PageResult<Emp> page(EmpQueryParams empQueryParams);
+
+    Result add(Emp emp);
 }

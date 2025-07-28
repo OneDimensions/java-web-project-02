@@ -27,4 +27,11 @@
         </where>
         order by e.update_time desc
     </select>
+
+    <insert id="add" parameterType="com.onedimension.pojo.Emp">
+        insert into emp(name, username, gender, phone, job, salary, dept_id, entry_date)
+        values(#{name}, #{username}, #{gender}, #{phone}, #{job}, #{salary}, #{deptId}, #{entryDate})
+    </insert>
+
+
 </mapper>

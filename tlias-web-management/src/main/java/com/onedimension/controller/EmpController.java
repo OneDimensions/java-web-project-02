@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,4 +29,11 @@ public class EmpController {
         PageResult<Emp> empPageResult = empService.page(empQueryParams);
         return ResultUtil.success(empPageResult);
     }
+
+    @PostMapping
+    public Result add(Emp emp) {
+        log.info("新增员工: {}", emp);
+        return empService.add(emp);
+    }
+
 }
