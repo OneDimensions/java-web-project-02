@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 复杂的sql建议使用xml -->
+<!-- namespace: 指定包名 -->
+<mapper namespace="com.onedimension.mapper.EmpMapper">
+    <!-- id: 方法名 resultType: 查询语句返回记录单条的类型 -->
+    <!-- 使用pagehelper完成分页查询, 不需要指定limit -->
+    <!-- concat 拼接字符串函数 -->
+    <!-- if 动态sql -->
+    <!-- where会根据条件自动去除条件前多余的and or -->
+    <select id="page" resultType="com.onedimension.pojo.Emp">
+        select e.*, d.name
+        from emp e
+        left join dept d
+        on e.dept_id = d.id
+        <where>
+            <if test="name != null and name != ''">
+                e.name like concat('%', #{name}, '%')
+            </if>
+            <if test="gender != null">
+                and e.gender = #{gender}
+            </if>
+            <if test="begin != null and end != null">
+                and e.entry_date between #{begin} and #{end}
+            </if>
+        </where>
+        order by e.update_time desc
+    </select>
+</mapper>
