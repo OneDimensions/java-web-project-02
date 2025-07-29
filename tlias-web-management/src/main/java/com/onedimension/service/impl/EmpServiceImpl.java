@@ -2,19 +2,20 @@ package com.onedimension.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.onedimension.mapper.EmpExprMapper;
+import com.onedimension.mapper.EmpLogMapper;
 import com.onedimension.mapper.EmpMapper;
-import com.onedimension.pojo.Emp;
-import com.onedimension.pojo.EmpQueryParams;
-import com.onedimension.pojo.PageResult;
-import com.onedimension.pojo.Result;
+import com.onedimension.pojo.*;
+import com.onedimension.service.EmpLogService;
 import com.onedimension.service.EmpService;
-import com.onedimension.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -22,6 +23,12 @@ import java.util.List;
 public class EmpServiceImpl implements EmpService {
     @Autowired
     private EmpMapper empMapper;
+
+    @Autowired
+    private EmpExprMapper empExprMapper;
+
+    @Autowired
+    private EmpLogService empLogService;
 
     /**
      * 传统分页查询方法
@@ -35,7 +42,6 @@ public class EmpServiceImpl implements EmpService {
     //     PageResult<Emp> pageResult = new PageResult<Emp>(total, emps);
     //     return pageResult;
     // }
-
     @Override
     public PageResult<Emp> page(EmpQueryParams empQueryParams) {
         /**
@@ -55,8 +61,59 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
-    public Result add(Emp emp) {
-        empMapper.add(emp);
-        return ResultUtil.success();
+    // 事务: 一组操作要么都成功,要么都失败, 保证数据的一致性
+    // 事务的注解要加在service层
+    // start transaction
+    // 成功了就commit提交, 失败了就rollback回滚
+
+    // @Transactional: 开启事务注解 这个注解默认是出现运行时异常RuntimeException才会回滚
+    // (rollbackFor: 指定出现哪些异常就回滚)
+
+    // (propagation: 事务的传播行为)
+    // REQUIRED: 如果当前存在事务,则加入该事务, 如果当前没有事务, 则创建一个新的事务( 默认 )
+    // REQUIRES_NEW: 创建一个新的事务, 如果当前存在事务, 则把当前事务挂起
+    // NESTED: 如果当前存在事务,则在嵌套事务中执行, 如果当前没有事务,则创建一个新的事务
+
+    // 事务的四大特性
+    // 1. 原子性: 事务是最小的操作单元, 一组操作要么都成功,要么都失败, 保证数据的一致性
+    // 2. 一致性: 事务完成时, 必须使所有的数据都一致
+    // 3. 隔离性: 数据库系统提供的隔离机制, 保证事务不受外部并发影响的独立环境下运行
+    // 4. 持久性: 事务一旦提交或者回滚, 这个对数据的操作就是永久性的
+
+    @Transactional(rollbackFor = {Exception.class})
+    public void saveEmp(Emp emp) {
+        try {
+            emp.setCreateTime(LocalDateTime.now());
+            emp.setUpdateTime(LocalDateTime.now());
+            empMapper.saveEmp(emp);
+
+
+            List<EmpExpr> empExprList = emp.getExprList();
+            if (!CollectionUtils.isEmpty(empExprList)) {
+                empExprList.forEach(e -> {
+                    // 此处设置的员工id 是新增员工时使用@options注解获取的主键返回
+                    e.setEmpId(emp.getId());
+
+                });
+                batchInsertEmpExpr(empExprList);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            // 记录日志
+            // 因为开启了默认事务, 并且默认insertLog的事务是被当前事务所控制
+            // 如果上面出现了异常, 这个数据库插入就会被回滚
+            // 而目的是要无论是成功还是失败都记录日志, 写入到数据库
+            // 所以需要控制事务传播行为, 让insertLog开启新的事务
+            EmpLog empLog = new EmpLog();
+            empLog.setInfo("新增员工" + emp);
+            empLog.setOperateTime(LocalDateTime.now());
+            empLogService.insertLog(empLog);
+        }
+    }
+
+    @Override
+    public void batchInsertEmpExpr(List<EmpExpr> empExprList) {
+        empExprMapper.batchInsertEmpExpr(empExprList);
     }
 }

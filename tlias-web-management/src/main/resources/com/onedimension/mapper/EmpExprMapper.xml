@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onedimension.mapper.EmpExprMapper">
+
+    <!--foreach: 遍历
+        collection: 遍历的集合名称collection
+        item: 每个元素名称
+        index: 索引
+        separator: 拼接的分隔符
+        open: 遍历前拼接的字符串
+        close: 遍历后拼接的字符串
+        -->
+    <!-- 主键返回 -->
+    <insert id="batchInsertEmpExpr">
+        insert into emp_expr(emp_id, begin, end, company, job)
+        <foreach collection="empExprList" item="empExpr" separator="," open="values" close=";">
+            (#{empExpr.empId}, #{empExpr.begin}, #{empExpr.end}, #{empExpr.company}, #{empExpr.job})
+        </foreach>
+    </insert>
+</mapper>

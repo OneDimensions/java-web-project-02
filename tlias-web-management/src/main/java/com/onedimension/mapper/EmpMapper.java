@@ -1,9 +1,10 @@
 package com.onedimension.mapper;
 
 import com.onedimension.pojo.Emp;
+import com.onedimension.pojo.EmpExpr;
 import com.onedimension.pojo.EmpQueryParams;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 
@@ -24,7 +25,15 @@ public interface EmpMapper {
 
     // -----mybatis分页实现 pagehelper
 
+    /**
+     * 员工信息分页
+     */
     List<Emp> page(EmpQueryParams empQueryParams);
 
-    void add(Emp emp);
+    /**
+     * 新增员工
+     */
+    // Options注解可以获取到返回的主键, useGeneratedKeys: 表示使用生成的主键, keyProperty: 表示返回的主键名
+    // @Options(useGeneratedKeys = true, keyProperty = "id")  写在了xml中
+    Integer saveEmp(Emp emp);
 }

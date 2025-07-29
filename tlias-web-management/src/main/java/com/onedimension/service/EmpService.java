@@ -1,14 +1,13 @@
 package com.onedimension.service;
 
-import com.onedimension.pojo.Emp;
-import com.onedimension.pojo.EmpQueryParams;
-import com.onedimension.pojo.PageResult;
-import com.onedimension.pojo.Result;
+import com.onedimension.pojo.*;
 
-import java.time.LocalDate;
+import java.util.List;
 
 public interface EmpService {
     PageResult<Emp> page(EmpQueryParams empQueryParams);
 
-    Result add(Emp emp);
+    void saveEmp(Emp emp);
+
+    void batchInsertEmpExpr(List<EmpExpr> empExprList);
 }
