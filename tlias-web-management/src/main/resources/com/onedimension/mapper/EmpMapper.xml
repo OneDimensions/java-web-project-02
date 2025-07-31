@@ -33,4 +33,11 @@
         values(#{name}, #{username}, #{gender}, #{phone}, #{job}, #{salary}, #{deptId}, #{image}, #{entryDate}, #{createTime}, #{updateTime})
     </insert>
 
+    <delete id="deleteEmpById">
+        delete from emp where id in
+                        <foreach collection="ids" item="id" separator="," open="(" close=")">
+                            #{id}
+                        </foreach>
+    </delete>
+
 </mapper>

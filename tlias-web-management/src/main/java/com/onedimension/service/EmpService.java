@@ -10,4 +10,6 @@ public interface EmpService {
     void saveEmp(Emp emp);
 
     void batchInsertEmpExpr(List<EmpExpr> empExprList);
+
+    void deleteEmp(List<Integer> ids);
 }

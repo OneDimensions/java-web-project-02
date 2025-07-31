@@ -3,7 +3,6 @@ package com.onedimension.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.onedimension.mapper.EmpExprMapper;
-import com.onedimension.mapper.EmpLogMapper;
 import com.onedimension.mapper.EmpMapper;
 import com.onedimension.pojo.*;
 import com.onedimension.service.EmpLogService;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -115,5 +113,12 @@ public class EmpServiceImpl implements EmpService {
     @Override
     public void batchInsertEmpExpr(List<EmpExpr> empExprList) {
         empExprMapper.batchInsertEmpExpr(empExprList);
+    }
+
+    @Override
+    @Transactional()
+    public void deleteEmp(List<Integer> ids) {
+        empMapper.deleteEmpById(ids);
+        empExprMapper.deleteEmpExprByEmpId(ids);
     }
 }
