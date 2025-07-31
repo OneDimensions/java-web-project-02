@@ -1,5 +1,6 @@
 package com.onedimension.mapper;
 
+import com.onedimension.pojo.Emp;
 import com.onedimension.pojo.EmpExpr;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,4 +20,11 @@ public interface EmpExprMapper {
      * 删除员工工作经历
      */
     void deleteEmpExprByEmpId(List<Integer> empIds);
+
+    /**
+     * 根据员工id查询员工工作经历
+     */
+    List<EmpExpr> getEmpExprByEmpId(Integer empId);
+
+    void modify(EmpExpr empExpr);
 }

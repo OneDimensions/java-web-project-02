@@ -49,4 +49,24 @@ public class EmpController {
         empService.deleteEmp(ids);
         return ResultUtil.success();
     }
+
+    /**
+     * 根据id查询员工
+     */
+    @GetMapping("/{id}")
+    public Result getEmpById(@PathVariable Integer id) {
+        log.info("根据id查询员工: {}", id);
+        Emp emp = empService.getEmpById(id);
+        return ResultUtil.success(emp);
+    }
+
+    /**
+     * 修改员工
+     */
+    @PutMapping
+    public Result updateEmp(@RequestBody Emp emp) {
+        log.info("修改员工: {}", emp);
+        empService.modify(emp);
+        return ResultUtil.success();
+    }
 }

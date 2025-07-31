@@ -23,7 +23,21 @@
     <delete id="deleteEmpExprByEmpId">
         delete from emp_expr where emp_id in
                              <foreach collection="empIds" item="empId" separator="," open="(" close=")">
-                                 #{id}
+                                 #{empId}
                              </foreach>
     </delete>
+
+    <!-- 根据empId查询员工工作经历 -->
+    <select id="getEmpExprByEmpId" resultType="com.onedimension.pojo.EmpExpr">
+        select id, emp_id, begin, end, company, job from emp_expr where emp_id = #{empId}
+    </select>
+
+    <update id="modify">
+        update emp_expr
+        set begin   = #{begin},
+            end     = #{end},
+            company = #{company},
+            job     = #{job}
+        where emp_id = #{empId}
+    </update>
 </mapper>

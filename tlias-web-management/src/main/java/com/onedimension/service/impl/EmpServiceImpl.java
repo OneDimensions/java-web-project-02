@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -120,5 +122,36 @@ public class EmpServiceImpl implements EmpService {
     public void deleteEmp(List<Integer> ids) {
         empMapper.deleteEmpById(ids);
         empExprMapper.deleteEmpExprByEmpId(ids);
+    }
+
+    @Override
+    public Emp getEmpById(Integer id) {
+        // 使用两次查询复制
+        // Emp emp = empMapper.getEmpById(id);
+        // emp.setExprList(empExprMapper.getEmpExprByEmpId(id));
+        Emp emp = empMapper.getEmpByIdV2(id);
+        return emp;
+    }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public void modify(Emp emp) {
+        emp.setUpdateTime(LocalDateTime.now());
+        // 1. 更新基本信息
+        empMapper.modify(emp);
+
+        // 2. 批量更新员工经历(先删再插入)
+        // 先删除
+        List<Integer> empIds = new ArrayList<>();
+        empIds.add(emp.getId());
+        empExprMapper.deleteEmpExprByEmpId(empIds);
+
+        // 再插入
+        List<EmpExpr> exprList = emp.getExprList();
+        exprList.forEach(e -> {
+            // 设置员工id
+            e.setEmpId(emp.getId());
+        });
+        empExprMapper.batchInsertEmpExpr(exprList);
     }
 }

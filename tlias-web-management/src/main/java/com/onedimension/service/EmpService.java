@@ -12,4 +12,8 @@ public interface EmpService {
     void batchInsertEmpExpr(List<EmpExpr> empExprList);
 
     void deleteEmp(List<Integer> ids);
+
+    Emp getEmpById(Integer id);
+
+    void modify(Emp emp);
 }

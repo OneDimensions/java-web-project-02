@@ -10,7 +10,7 @@
     <!-- if 动态sql -->
     <!-- where会根据条件自动去除条件前多余的and or -->
     <select id="page" resultType="com.onedimension.pojo.Emp">
-        select e.*, d.name
+        select e.*, d.name as deptName
         from emp e
         left join dept d
         on e.dept_id = d.id
@@ -29,15 +29,84 @@
     </select>
 
     <insert id="saveEmp" useGeneratedKeys="true" keyProperty="id">
-        insert into emp(name, username, gender, phone, job, salary, dept_id, image, entry_date, create_time, update_time)
-        values(#{name}, #{username}, #{gender}, #{phone}, #{job}, #{salary}, #{deptId}, #{image}, #{entryDate}, #{createTime}, #{updateTime})
+        insert into emp(name, username, gender, phone, job, salary, dept_id, image, entry_date, create_time,
+                        update_time)
+        values (#{name}, #{username}, #{gender}, #{phone}, #{job}, #{salary}, #{deptId}, #{image}, #{entryDate},
+                #{createTime}, #{updateTime})
     </insert>
 
     <delete id="deleteEmpById">
         delete from emp where id in
-                        <foreach collection="ids" item="id" separator="," open="(" close=")">
-                            #{id}
-                        </foreach>
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
     </delete>
+
+
+    <select id="getEmpById" resultType="com.onedimension.pojo.Emp">
+        select e.*, d.name as deptName
+        from emp e
+                 left join dept d
+                           on e.dept_id = d.id
+        where e.id = #{id}
+    </select>
+
+
+    <!-- 手动数据映射  id: 绑定sql查询结果  type: 封装的实体类 -->
+    <resultMap id="empResultMap" type="com.onedimension.pojo.Emp">
+        <!-- column: 查询的字段名 property: 封装的实体类属性 -->
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="username" property="username"/>
+        <result column="gender" property="gender"/>
+        <result column="phone" property="phone"/>
+        <result column="job" property="job"/>
+        <result column="salary" property="salary"/>
+        <result column="image" property="image"/>
+        <result column="entry_date" property="entryDate"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="dept_id" property="deptId"/>
+
+        <!-- 封装集合 property: 封装的实体类属性, ofType: 集合元素的类型 -->
+        <collection property="exprList" ofType="com.onedimension.pojo.EmpExpr">
+            <id column="ee_id" property="id"/>
+            <result column="ee_emp_id" property="empId"/>
+            <result column="ee_job" property="job"/>
+            <result column="ee_begin" property="begin"/>
+            <result column="ee_end" property="end"/>
+            <result column="ee_company" property="company"/>
+        </collection>
+
+    </resultMap>
+
+    <!-- 如果查询的数据复杂, 或者返回的字段名和实体类名不一致, 可以使用resultMap来指定数据映射 -->
+    <select id="getEmpByIdV2" resultMap="empResultMap">
+        select e.*,
+               ee.id      ee_id,
+               ee.emp_id  ee_emp_id,
+               ee.job     ee_job,
+               ee.begin   ee_begin,
+               ee.end     ee_end,
+               ee.company ee_company
+        from emp e
+                 left join emp_expr ee on e.id = ee.emp_id
+        where e.id = #{id}
+    </select>
+
+    <update id="modify">
+        update emp
+        set name        = #{name},
+            username    = #{username},
+            gender      = #{gender},
+            phone       = #{phone},
+            job         = #{job},
+            salary      = #{salary},
+            image       = #{image},
+            dept_id     = #{deptId},
+            entry_date  = #{entryDate},
+            update_time = #{updateTime}
+        where id = #{id}
+    </update>
 
 </mapper>
