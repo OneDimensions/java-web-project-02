@@ -58,7 +58,7 @@ public class UploadController {
     @PostMapping("/upload")
     public Result upload(MultipartFile file) throws IOException, ClientException {
         log.info("上传文件: {}", file);
-        uploadService.upload(file);
-        return ResultUtil.success();
+        String filePath = uploadService.upload(file);
+        return ResultUtil.success(filePath, "上传成功");
     }
 }

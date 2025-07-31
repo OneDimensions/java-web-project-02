@@ -29,8 +29,8 @@
     </select>
 
     <insert id="saveEmp" useGeneratedKeys="true" keyProperty="id">
-        insert into emp(name, username, gender, phone, job, salary, dept_id, entry_date, create_time, update_time)
-        values(#{name}, #{username}, #{gender}, #{phone}, #{job}, #{salary}, #{deptId}, #{entryDate}, #{createTime}, #{updateTime})
+        insert into emp(name, username, gender, phone, job, salary, dept_id, image, entry_date, create_time, update_time)
+        values(#{name}, #{username}, #{gender}, #{phone}, #{job}, #{salary}, #{deptId}, #{image}, #{entryDate}, #{createTime}, #{updateTime})
     </insert>
 
 </mapper>
