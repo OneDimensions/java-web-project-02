@@ -2,7 +2,6 @@ package com.onedimension.mapper;
 
 import com.onedimension.pojo.Emp;
 import com.onedimension.pojo.EmpQueryParams;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -52,5 +51,5 @@ public interface EmpMapper {
     /**
      * 修改
      */
-    void modify(Emp emp);
+    void updateEmpById(Emp emp);
 }

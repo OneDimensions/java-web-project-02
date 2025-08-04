@@ -14,9 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -138,20 +137,23 @@ public class EmpServiceImpl implements EmpService {
     public void modify(Emp emp) {
         emp.setUpdateTime(LocalDateTime.now());
         // 1. 更新基本信息
-        empMapper.modify(emp);
+        empMapper.updateEmpById(emp);
 
         // 2. 批量更新员工经历(先删再插入)
         // 先删除
-        List<Integer> empIds = new ArrayList<>();
-        empIds.add(emp.getId());
-        empExprMapper.deleteEmpExprByEmpId(empIds);
+        // 获取员工ID列表
+        empExprMapper.deleteEmpExprByEmpId(Arrays.asList(emp.getId()));
 
         // 再插入
         List<EmpExpr> exprList = emp.getExprList();
-        exprList.forEach(e -> {
-            // 设置员工id
-            e.setEmpId(emp.getId());
-        });
-        empExprMapper.batchInsertEmpExpr(exprList);
+
+        if (!CollectionUtils.isEmpty(exprList)) {
+            exprList.forEach(e -> {
+                // 设置员工id
+                e.setEmpId(emp.getId());
+            });
+            empExprMapper.batchInsertEmpExpr(exprList);
+        }
+
     }
 }

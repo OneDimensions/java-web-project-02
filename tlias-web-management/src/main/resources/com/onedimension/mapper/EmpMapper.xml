@@ -94,18 +94,45 @@
         where e.id = #{id}
     </select>
 
-    <update id="modify">
+    <!-- 根据id更新员工信息 -->
+    <!-- set标签: 会自动生成set语句, 并取出多余的, -->
+    <update id="updateEmpById">
         update emp
-        set name        = #{name},
-            username    = #{username},
-            gender      = #{gender},
-            phone       = #{phone},
-            job         = #{job},
-            salary      = #{salary},
-            image       = #{image},
-            dept_id     = #{deptId},
-            entry_date  = #{entryDate},
-            update_time = #{updateTime}
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="job != null and job != ''">
+                job = #{job},
+            </if>
+            <if test="salary != null">
+                salary = #{salary},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="entryDate != null">
+                entry_date = #{entryDate},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
         where id = #{id}
     </update>
 
