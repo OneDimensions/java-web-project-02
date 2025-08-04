@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.onedimension.mapper.ReportMapper">
+    <select id="empJobData" resultType="com.onedimension.pojo.JobOption">
+        select count(*) as jobList,
+               case job
+                   when 1 then '班主任'
+                   when 2 then '讲师'
+                   when 3 then '学工主管'
+                   when 4 then '教研主管'
+                   when 5 then '咨询师'
+                   else '其他' end
+                        as dataList
+        from emp
+        group by emp.job;
+    </select>
+</mapper>
