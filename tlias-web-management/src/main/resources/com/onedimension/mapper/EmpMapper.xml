@@ -24,6 +24,9 @@
             <if test="begin != null and end != null">
                 and e.entry_date between #{begin} and #{end}
             </if>
+            <if test="deptId != null">
+                and e.dept_id = #{deptId}
+            </if>
         </where>
         order by e.update_time desc
     </select>

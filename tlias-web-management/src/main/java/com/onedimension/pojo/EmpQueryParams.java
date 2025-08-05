@@ -15,4 +15,5 @@ public class EmpQueryParams {
     private LocalDate begin;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate end;
+    private Integer deptId;
 }

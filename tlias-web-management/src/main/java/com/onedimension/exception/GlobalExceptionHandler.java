@@ -19,7 +19,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public Result doException(Exception e) {
         log.error("服务器发生错误: ", e);
-        return ResultUtil.fail("服务器异常, 请稍后再试");
+        String message = e.getMessage();
+        return ResultUtil.fail(!message.isEmpty() ? message : "服务器异常, 请稍后再试");
     }
 
     @ExceptionHandler
