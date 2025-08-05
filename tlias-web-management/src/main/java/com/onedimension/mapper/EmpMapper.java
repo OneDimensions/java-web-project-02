@@ -2,9 +2,11 @@ package com.onedimension.mapper;
 
 import com.onedimension.pojo.Emp;
 import com.onedimension.pojo.EmpQueryParams;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工信息
@@ -52,4 +54,19 @@ public interface EmpMapper {
      * 修改
      */
     void updateEmpById(Emp emp);
+
+    /**
+     * 统计员工职位人数
+     */
+    @MapKey("pos")
+    List<Map<String, Object>> countEmpJobData();
+
+    @MapKey("name")
+    List<Map<String, Object>> getEmpGenderData();
+
+    @MapKey("name")
+    List<Map<String, Object>> countStudentDegreeData();
+
+    @MapKey("name")
+    List<Map<String, Object>> countStudentData();
 }

@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 班级人数统计
+ */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class JobOption {
-    /**
-     * 部门列表
-     */
-    List<String> jobList;
-    /**
-     * 部门人数
-     */
-    List<Integer> dataList;
+@AllArgsConstructor
+public class ClazzCountOption {
+    private List clazzList; //职位列表
+    private List dataList; //人数列表
 }

@@ -15,9 +15,35 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    /**
+     * 5.2 员工职位人数统计
+     */
     @GetMapping("/empJobData")
     public Result empJobData() {
-        return ResultUtil.success(reportService.empJobData());
+        return ResultUtil.success(reportService.getEmpJobData());
     }
 
+    /**
+     * 5.1 员工性别统计
+     */
+    @GetMapping("/empGenderData")
+    public Result empGenderData() {
+        return ResultUtil.success(reportService.getEmpGenderData());
+    }
+
+    /**
+     * 5.3 学员学历统计
+     */
+    @GetMapping("/studentDegreeData")
+    public Result studentDegreeData() {
+        return ResultUtil.success(reportService.getStudentDegreeData());
+    }
+
+    /**
+     * 5.4 班级人数统计
+     */
+    @GetMapping("/studentCountData")
+    public Result studentCountData() {
+        return ResultUtil.success(reportService.getStudentCountData());
+    }
 }

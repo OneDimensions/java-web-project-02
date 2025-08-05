@@ -16,4 +16,6 @@ public interface EmpService {
     Emp getEmpById(Integer id);
 
     void modify(Emp emp);
+
+    List<Emp> list();
 }

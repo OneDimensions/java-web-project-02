@@ -69,4 +69,13 @@ public class EmpController {
         empService.modify(emp);
         return ResultUtil.success();
     }
+
+    /**
+     * 查询所有员工
+     */
+    @GetMapping("/list")
+    public Result list() {
+        log.info("查询所有员工");
+        return ResultUtil.success(empService.list());
+    }
 }
