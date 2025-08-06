@@ -1,5 +1,6 @@
 package com.onedimension.controller;
 
+import com.onedimension.anno.Log;
 import com.onedimension.pojo.Emp;
 import com.onedimension.pojo.EmpQueryParams;
 import com.onedimension.pojo.PageResult;
@@ -26,6 +27,7 @@ public class EmpController {
         return ResultUtil.success(empPageResult);
     }
 
+    @Log
     @PostMapping
     public Result save(@RequestBody Emp emp) {
         log.info("新增员工: {}", emp);
@@ -43,6 +45,7 @@ public class EmpController {
     //     empService.deleteEmp(ids);
     //     return ResultUtil.success();
     // }
+    @Log
     @DeleteMapping
     public Result deleteEmp(@RequestParam("ids") List<Integer> ids) {
         log.info("删除员工: {}", ids);
@@ -53,6 +56,7 @@ public class EmpController {
     /**
      * 根据id查询员工
      */
+    @Log
     @GetMapping("/{id}")
     public Result getEmpById(@PathVariable Integer id) {
         log.info("根据id查询员工: {}", id);
@@ -63,6 +67,7 @@ public class EmpController {
     /**
      * 修改员工
      */
+    @Log
     @PutMapping
     public Result updateEmp(@RequestBody Emp emp) {
         log.info("修改员工: {}", emp);

@@ -1,11 +1,13 @@
 package com.onedimension.aop;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@Aspect // 标识这是一个aop切面类
+// @Aspect // 标识这是一个aop切面类
 @Component // 将这个类交给spring管理,spring会生成一个代理对象的bean
 // @Order(1) // 指定切面运行的优先级
 public class AopDemo {
@@ -36,6 +38,25 @@ public class AopDemo {
         Object proceed = pjp.proceed();// 执行目标方法 获取返回值
         System.out.println("around: " + proceed);
         return proceed;
+    }
+
+    @Before("@annotation(com.onedimension.anno.Log)")
+    public void before2(JoinPoint joinPoint) {
+        System.out.println("annotation切入点表达式");
+
+        // 获取目标对象
+        Object target = joinPoint.getTarget();
+        
+        // 获取目标类
+        String name1 = target.getClass().getName();
+
+        // 获取目标方法
+        Signature signature = joinPoint.getSignature();
+        String name = signature.getName();
+
+        // 获取目标方法参数
+        Object[] args = joinPoint.getArgs();
+
     }
 
 }
