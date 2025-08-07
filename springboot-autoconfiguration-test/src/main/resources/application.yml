@@ -1,0 +1,8 @@
+# 自定义配置信息
+# 2. 通过创建一个bean的方式注入 复用方便
+# 阿里云配置
+aliyun:
+  oss:
+    endpoint: https://oss-cn-guangzhou.aliyuncs.com
+    bucketName: my-bucket-2233
+    region: cn-guangzhou
