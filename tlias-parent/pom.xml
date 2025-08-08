@@ -21,25 +21,81 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <!-- 此工程也是聚合工程, 用作快速构建项目, 对聚合工程的生命周期操作会同步执行所有模块相对应的生命周期操作 -->
+    <!-- 指定聚合那些模块 -->
+    <modules>
+        <module>../tlias-pojo</module>
+        <module>../tlias-utils</module>
+        <module>../tlias-web-management</module>
+    </modules>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- 自定义属性 -->
+        <lombok.version>1.18.38</lombok.version>
+        <spring.boot.starter.version>3.4.8</spring.boot.starter.version>
     </properties>
 
+    <!-- 直接引入对应的依赖 -->
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-            <version>1.18.38</version>
+            <!-- 应用自定义属性 -->
+            <version>${lombok.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>3.4.8</version>
+            <version>${spring.boot.starter.version}</version>
         </dependency>
     </dependencies>
+
+    <!-- 不会直接引入对应的依赖, 只做统一的依赖版本管理 -->
+    <!-- 子工程引入对应依赖时不需要再指定版本 -->
+    <dependencyManagement>
+        <!-- jwt -->
+        <dependencies>
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>3.17.4</version>
+            </dependency>
+            <!-- 阿里云附属依赖 -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+            <!-- no more than 2.3.3-->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>2.3.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.onedimension</groupId>
+                <artifactId>tlias-pojo</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.9.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

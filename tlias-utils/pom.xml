@@ -26,37 +26,26 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.17.4</version>
         </dependency>
         <!-- 阿里云附属依赖 -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
         </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
-            <version>1.1.1</version>
         </dependency>
         <!-- no more than 2.3.3-->
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-            <version>2.3.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.onedimension</groupId>
-            <artifactId>tlias-pojo</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!-- jwt -->
+        <!-- 此依赖在父工程中锁定了版本,在工程引入时就不需要指定版本 -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
         </dependency>
     </dependencies>
 
