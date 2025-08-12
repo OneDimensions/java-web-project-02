@@ -47,6 +47,11 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.onedimension</groupId>
+            <artifactId>tlias-pojo</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
