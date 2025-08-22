@@ -1,0 +1,49 @@
+#nginx-proxy应用的配置清单文件 apiVersion:
+# Deployment是通过labels来管理pod的
+# 主要通过三个点来控制: 1. pod的数量(replicas) 2. pod的标签选择器(selector) 3. pod的资源(template)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # 指定pod的名称
+  name: sswang-nginx-proxy
+  # 指定pod的标签
+  labels:
+    app: nginx
+spec:
+  # 自动化控制管理pod的数量
+  replicas: 1
+  selector:
+    # 这里就是pod的标签, 通过这个标签来管理pod, 名字与下面的metadata中的labels一致
+    matchLabels:
+      app: nginx
+  template:
+    # 这里就是pod的资源对象属性信息
+    metadata:
+      labels:
+        # 这里就是pod的标签
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: kubernetes-register.sswang.com/sswang/nginx
+          ports:
+            - containerPort: 80
+
+#---: 通过短横杆隔开, 可以在一个配置文件中定义多个资源对象
+---
+# 服务的配置清单文件
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  labels:
+    app: nginx-svc # 服务的标签
+spec:
+  # 服务类型
+  #type: LoadBalancer
+  # 服务的端口信息
+  ports:
+    - port: 80 # 服务的端口
+      targetPort: 80 # 指向pod的端口
+  selector:
+    app: nginx-svc # 服务的标签关联

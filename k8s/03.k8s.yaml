@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-project-web
+  namespace: power-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-project-web
+  template:
+    metadata:
+      labels:
+        app: my-project-web
+    spec:
+      nodeSelector:
+        nodetype: project
+      containers:
+        - name: my-project-web
+          image: repo.xxxdev.cn:8082/project/my-project-web:image-version
+          ports:
+            - containerPort: 8080
+---
+
+# 入口流量由ingress控制
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-project-web-ingress
+  namespace: power-project
+spec:
+  rules:
+    - host: csms-ccs.project.cn
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                # 这里指定的就是ingress所关联的service
+                name: my-project-web-svc
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - csms-ccs.project.cn
+      secretName: projectcn
+---
+# 这个service是处理ingress流量导入后寻找对应的pod问题
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-project-web-svc
+  namespace: power-project
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    # 通过标签来关联对应的pod,, 这里就是上面的deployment
+    app: my-project-web
